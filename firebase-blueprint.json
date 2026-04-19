@@ -1,0 +1,167 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and fitness metrics",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "trainer", "admin"] },
+        "subscription": { "type": "string", "enum": ["free", "premium"] },
+        "bmi": { "type": "number" },
+        "goals": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Course": {
+      "title": "Course",
+      "description": "Educational fitness course",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "instructor": { "type": "string" },
+        "price": { "type": "number" },
+        "category": { "type": "string" },
+        "thumbnailUrl": { "type": "string" },
+        "videos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "url": { "type": "string" },
+              "duration": { "type": "number" }
+            }
+          }
+        },
+        "premiumOnly": { "type": "boolean" }
+      }
+    },
+    "Workout": {
+      "title": "Workout Record",
+      "description": "Individual workout session",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "duration": { "type": "number" },
+        "caloriesBurned": { "type": "number" },
+        "exercises": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "sets": { "type": "number" },
+              "reps": { "type": "number" },
+              "weight": { "type": "number" }
+            }
+          }
+        }
+      }
+    },
+    "Product": {
+      "title": "Shop Product",
+      "description": "Fitness gear or supplement",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "category": { "type": "string" },
+        "stock": { "type": "integer" },
+        "imageUrl": { "type": "string" }
+      }
+    },
+    "Order": {
+      "title": "Product Order",
+      "description": "E-commerce order",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": { "type": "string" },
+              "quantity": { "type": "number" },
+              "priceAtPurchase": { "type": "number" }
+            }
+          }
+        },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "shipped", "delivered", "cancelled"] },
+        "address": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Progress": {
+      "title": "Progress Entry",
+      "description": "User body measurements and photos",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "weight": { "type": "number" },
+        "measurements": {
+          "type": "object",
+          "properties": {
+            "chest": { "type": "number" },
+            "waist": { "type": "number" },
+            "hips": { "type": "number" }
+          }
+        },
+        "photoUrl": { "type": "string" }
+      }
+    },
+    "Review": {
+      "title": "Product Review",
+      "description": "Customer review for a shop product",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "rating": { "type": "number", "minimum": 1, "maximum": 5 },
+        "comment": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "userId", "rating", "comment", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/courses/{courseId}": {
+      "schema": "Course",
+      "description": "Available courses"
+    },
+    "/workouts/{workoutId}": {
+      "schema": "Workout",
+      "description": "User workout logs"
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Shop inventory"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer orders"
+    },
+    "/progress/{progressId}": {
+      "schema": "Progress",
+      "description": "Body progress tracking"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Product reviews"
+    }
+  }
+}
